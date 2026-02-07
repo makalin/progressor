@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# PROGRESSOR — px toolchain: build WASM, serve local dev.
+
+set -e
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
+
+cmd="${1:-}"
+
+case "$cmd" in
+  build)
+    echo "[px] Building WASM (web target)..."
+    wasm-pack build --target web
+    echo "[px] Done. Output in pkg/"
+    ;;
+  serve)
+    if [ ! -f "pkg/progressor.js" ]; then
+      echo "[px] pkg/ not found. Running build first..."
+      wasm-pack build --target web
+    fi
+    echo "[px] Serving at http://127.0.0.1:8080"
+    echo "[px] Open index.html or http://127.0.0.1:8080"
+    exec python3 -m http.server 8080
+    ;;
+  *)
+    echo "Usage: ./px {build|serve}"
+    echo "  build  — wasm-pack build --target web"
+    echo "  serve  — serve current dir on port 8080 (builds if needed)"
+    exit 1
+    ;;
+esac

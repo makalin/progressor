@@ -1,0 +1,46 @@
+# Rust / Cargo
+/target/
+**/target/
+Cargo.lock
+
+# WASM build artifacts (wasm-bindgen output)
+/pkg/
+*.wasm
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs and temp
+*.log
+*.tmp
+/tmp/
+/temp/
+
+# Python (if px uses venv)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (if any tooling added later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build output (optional; some prefer to commit wasm for gh-pages)
+/dist/

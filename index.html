@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROGRESSOR — Harmonic Orchestrator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="cyberdeck">
+    <header class="app-header">
+      <div class="header-left">
+        <span class="brand">PROGRESSOR</span>
+        <span class="tagline">harmonic orchestrator v0.1</span>
+      </div>
+      <nav class="tab-bar" role="tablist">
+        <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab="play">Play</button>
+        <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="theory">Theory</button>
+        <button type="button" class="tab-btn" role="tab" data-tab="tools">Tools</button>
+        <button type="button" class="tab-btn" role="tab" data-tab="setup">Setup</button>
+        <button type="button" class="tab-btn" role="tab" data-tab="info">Info</button>
+      </nav>
+    </header>
+
+    <main class="app-main">
+      <section id="tab-play" class="tab-panel active" role="tabpanel">
+        <div class="play-grid">
+          <section class="pane current-chord">
+            <h2 class="pane-title">Current</h2>
+            <div class="chord-display" id="currentChord">C</div>
+            <div class="quality-tabs">
+              <button type="button" class="quality-btn active" data-quality="">Maj</button>
+              <button type="button" class="quality-btn" data-quality="m">Min</button>
+              <button type="button" class="quality-btn" data-quality="7">7</button>
+            </div>
+          </section>
+          <section class="pane suggestions">
+            <h2 class="pane-title">Suggestions</h2>
+            <ul class="suggestion-list" id="suggestionList"></ul>
+          </section>
+          <section class="pane circle-pane">
+            <h2 class="pane-title">Circle of fifths</h2>
+            <p class="pane-desc">Click to set key</p>
+            <div class="circle-wrap" id="circleOfFifths"></div>
+          </section>
+          <section class="pane voice-leading">
+            <h2 class="pane-title">Voice leading</h2>
+            <p class="pane-desc">Roots by proximity</p>
+            <ul class="proximity-list" id="proximityList"></ul>
+          </section>
+          <section class="pane progression">
+            <h2 class="pane-title">Progression</h2>
+            <div class="progression-bar" id="progressionBar"></div>
+            <div class="degrees-row" id="degreesRow"></div>
+            <div class="progression-actions">
+              <button type="button" class="term-btn" id="btnAdd">+ add</button>
+              <button type="button" class="term-btn" id="btnClear">clear</button>
+              <button type="button" class="term-btn" id="btnExportJson">export JSON</button>
+              <button type="button" class="term-btn" id="btnExportRust">export Rust</button>
+              <button type="button" class="term-btn" id="btnExportMidi">export MIDI</button>
+            </div>
+          </section>
+          <section class="pane genre-pane">
+            <h2 class="pane-title">Genre</h2>
+            <p class="pane-desc">Select one or more · load progressions</p>
+            <div class="genre-checkboxes" id="genreCheckboxes"></div>
+            <div class="genre-progressions" id="genreProgressions"></div>
+          </section>
+          <section class="pane preview-pane">
+            <h2 class="pane-title">Preview / Play</h2>
+            <p class="pane-desc">Play current progression</p>
+            <div class="preview-controls">
+              <label>Tempo <input type="number" id="previewBpm" class="term-input num" value="120" min="40" max="240" step="5"> BPM</label>
+              <label>Beats/chord <input type="number" id="previewBeats" class="term-input num" value="2" min="1" max="8"></label>
+              <label>Style
+                <select id="previewStyle" class="term-select">
+                  <option value="block">Block</option>
+                  <option value="arpeggio-up">Arpeggio up</option>
+                  <option value="arpeggio-down">Arpeggio down</option>
+                </select>
+              </label>
+              <button type="button" class="term-btn term-btn-play" id="btnPreviewPlay">Play</button>
+              <button type="button" class="term-btn term-btn-stop" id="btnPreviewStop" disabled>Stop</button>
+            </div>
+          </section>
+          <section class="pane parts-pane">
+            <h2 class="pane-title">Song parts</h2>
+            <p class="pane-desc">Save progression as a section</p>
+            <div class="parts-controls">
+              <select id="partSelect" class="term-select" aria-label="Part type">
+                <option value="verse">Verse</option>
+                <option value="chorus">Chorus</option>
+                <option value="bridge">Bridge</option>
+                <option value="intro">Intro</option>
+                <option value="outro">Outro</option>
+              </select>
+              <button type="button" class="term-btn" id="btnSavePart">Save as part</button>
+              <button type="button" class="term-btn" id="btnLoadPart">Load part</button>
+            </div>
+            <div class="song-structure" id="songStructure"></div>
+          </section>
+          <section class="pane piano-pane">
+            <h2 class="pane-title">Piano</h2>
+            <p class="pane-desc">Current chord tones · click to play</p>
+            <div class="piano-wrap" id="pianoWrap"></div>
+          </section>
+          <section class="pane history-pane">
+            <h2 class="pane-title">History</h2>
+            <ul class="history-list" id="historyList"></ul>
+          </section>
+        </div>
+      </section>
+
+      <section id="tab-theory" class="tab-panel" role="tabpanel" hidden>
+        <div class="theory-grid">
+          <section class="pane theory-diagram-pane">
+            <h2 class="pane-title">Circle of fifths</h2>
+            <p class="pane-desc">Click a key on the circle</p>
+            <div class="circle-svg-wrap" id="circleSvgWrap">
+              <svg id="circleSvg" class="circle-svg" viewBox="0 0 220 220" aria-label="Circle of fifths"></svg>
+            </div>
+          </section>
+          <section class="pane chord-flow-pane">
+            <h2 class="pane-title">Chord flow</h2>
+            <p class="pane-desc">Current → suggested next (weight)</p>
+            <div class="chord-flow-diagram" id="chordFlowDiagram"></div>
+          </section>
+          <section class="pane diatonic">
+            <h2 class="pane-title">Diatonic</h2>
+            <div class="key-input-wrap">
+              <label for="keyInput">key</label>
+              <input type="text" id="keyInput" class="term-input" value="C" maxlength="2" placeholder="C">
+            </div>
+            <div class="diatonic-tabs">
+              <button type="button" class="diatonic-tab active" data-mode="major">major</button>
+              <button type="button" class="diatonic-tab" data-mode="minor">minor</button>
+            </div>
+            <ul class="diatonic-list" id="diatonicList"></ul>
+          </section>
+          <section class="pane modal-pane">
+            <h2 class="pane-title">Modal interchange</h2>
+            <p class="pane-desc">Borrowed from parallel minor</p>
+            <ul class="modal-list" id="modalList"></ul>
+          </section>
+          <section class="pane secondary-pane">
+            <h2 class="pane-title">Secondary dominants</h2>
+            <p class="pane-desc">V/X = dominant of chord X</p>
+            <ul class="secondary-list" id="secondaryList"></ul>
+          </section>
+        </div>
+      </section>
+
+      <section id="tab-tools" class="tab-panel" role="tabpanel" hidden>
+        <div class="tools-grid">
+          <section class="pane looper-pane">
+            <h2 class="pane-title">Looper</h2>
+            <div class="looper-controls">
+              <label for="looperBars">Bars</label>
+              <input type="number" id="looperBars" class="term-input num" value="4" min="1" max="16">
+              <button type="button" class="term-btn" id="btnMutate">mutate</button>
+            </div>
+            <p class="looper-hint" id="looperHint">Mutate suggests a variation of the last chord.</p>
+          </section>
+          <section class="pane midi-pane">
+            <h2 class="pane-title">MIDI</h2>
+            <div class="midi-status" id="midiStatus">—</div>
+            <button type="button" class="term-btn" id="btnMidi">Request MIDI</button>
+          </section>
+          <section class="pane presets-pane">
+            <h2 class="pane-title">Preset progressions</h2>
+            <p class="pane-desc">Uses current key from Theory</p>
+            <div class="preset-buttons" id="presetButtons"></div>
+          </section>
+          <section class="pane random-pane">
+            <h2 class="pane-title">Random</h2>
+            <p class="pane-desc">Generate a 4‑chord progression</p>
+            <button type="button" class="term-btn" id="btnRandom">Random progression</button>
+          </section>
+          <section class="pane copy-pane">
+            <h2 class="pane-title">Clipboard</h2>
+            <button type="button" class="term-btn" id="btnCopy">Copy progression</button>
+            <span class="copy-feedback" id="copyFeedback"></span>
+          </section>
+        </div>
+      </section>
+
+      <section id="tab-setup" class="tab-panel" role="tabpanel" hidden>
+        <div class="setup-content">
+          <h2 class="setup-heading">Theme</h2>
+          <div class="theme-grid" id="themeGrid"></div>
+          <h2 class="setup-heading">Current chord size</h2>
+          <div class="chord-size-options">
+            <label class="size-opt"><input type="radio" name="chordSize" value="large" checked> Large</label>
+            <label class="size-opt"><input type="radio" name="chordSize" value="xlarge"> Extra large</label>
+            <label class="size-opt"><input type="radio" name="chordSize" value="huge"> Huge</label>
+          </div>
+          <h2 class="setup-heading">Keyboard shortcuts</h2>
+          <div class="shortcuts-ref" id="shortcutsRef"></div>
+        </div>
+      </section>
+
+      <section id="tab-info" class="tab-panel" role="tabpanel" hidden>
+        <div class="info-content">
+          <h2 class="info-heading">About PROGRESSOR</h2>
+          <p class="info-text">A high-performance harmonic engine for musicians who treat improvisation as a science. Uses a weighted graph (circle of fifths, modal interchange) to suggest smooth chord transitions and voice-leading. Build progressions, see Roman numerals, borrow chords from parallel minor, and export to JSON or Rust.</p>
+          <h2 class="info-heading">Keyboard shortcuts</h2>
+          <dl class="info-shortcuts" id="infoShortcuts"></dl>
+          <h2 class="info-heading">Tabs</h2>
+          <p class="info-text">F1 = Info, F2 = Play, F3 = Theory, F4 = Tools, F5 = Setup.</p>
+          <h2 class="info-heading">Author</h2>
+          <p class="info-text">Mehmet T. AKALIN</p>
+          <ul class="info-links">
+            <li><a href="https://dv.com.tr" target="_blank" rel="noopener">dv.com.tr</a></li>
+            <li><a href="https://github.com/makalin" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/makalin/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://x.com/makalin" target="_blank" rel="noopener">X / Twitter</a></li>
+          </ul>
+          <h2 class="info-heading">License</h2>
+          <p class="info-text">MIT</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span id="wasmStatus">loading WASM…</span>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -2,28 +2,53 @@
 
 ### *The Harmonic Orchestrator for Professional Improvisation*
 
-**PROGRESSOR** is a high-performance, web-based harmonic engine designed for musicians who treat improvisation as a science. Built with a **retro-terminal aesthetic**, it provides a distraction-free "Cyberdeck" interface for guitarists and pianists to bridge the gap between music theory and muscle memory.
+**PROGRESSOR** is a high-performance, web-based harmonic engine designed for musicians who treat improvisation as a science. Built with a **retro-terminal aesthetic**, it provides a distraction-free interface for guitarists and pianists to bridge the gap between music theory and muscle memory.
 
-Unlike standard chord shufflers, **PROGRESSOR** utilizes a weighted **Graph Theory** approach to calculate harmonic tension, suggest modal interchanges, and visualize optimal voice-leading transitions in real-time.
+Unlike standard chord shufflers, **PROGRESSOR** uses a weighted **graph** (Circle of Fifths, modal interchange) to suggest smooth chord transitions and voice-leading in real time.
+
+![PROGRESSOR screenshot](screenshot.png)
 
 ---
 
 ## Key Features
 
-* **Harmonic Logic Engine:** Uses a transition matrix to suggest mathematically sound paths based on the Circle of Fifths and Modal Interchange.
-* **Voice Leading Optimizer:** Minimizes finger movement by calculating the smoothest inversions for both 24-fret guitar necks and piano keyboards.
-* **The Infinite Looper:** A TUI-inspired workspace that subtly mutates progressions every  bars to keep improvisation sessions evolving.
-* **MIDI Bridge:** Full **Web MIDI API** integration to sync with external DAWs, hardware synths, or MIDI controllers.
-* **Developer-Centric:** Export any progression as a JSON schema or a **Rust** struct for use in generative audio or game development.
+* **Harmonic engine:** Circle-of-fifths–based suggestions, diatonic and modal-interchange chords, secondary dominants.
+* **Voice leading:** Roots ordered by proximity; chord-flow diagram on the Theory tab.
+* **Song parts:** Save and load progressions as Verse, Chorus, Bridge, Intro, Outro.
+* **Genre & progressions:** Multi-select genres (Pop, Jazz, Blues, Rock, Folk, R&B, Latin, Classical) and load genre-specific progressions in the current key.
+* **Preview / Play:** Play the current progression with adjustable tempo (BPM), beats per chord, and style (block or arpeggio up/down).
+* **Piano:** On-screen keyboard with current-chord highlighting and click-to-play notes.
+* **MIDI:** Web MIDI API status and **export progression as .mid file**.
+* **Export:** JSON, Rust struct, or MIDI for use in DAWs or code.
+* **Themes:** Multiple themes (Terminal, Oscilloscope, Parchment, Neon, Ember, Stealth, Ocean, Forest, Sunset, Ink, Lime, Rose, Polar).
+* **Keyboard shortcuts:** Documented in Info and Setup (e.g. 1–8 suggestions, Enter add, C clear, F1–F5 tabs).
 
 ---
 
 ## Technical Architecture
 
-* **Logic:** **Rust + WASM** core for zero-latency harmonic calculations and high-fidelity DSP.
-* **Interface:** Custom-coded CSS focusing on a high-contrast, dark-mode terminal aesthetic—**Strictly No Tailwind**.
-* **Performance:** Jitter-free timing handled by a dedicated state machine to ensure professional-grade synchronization.
-* **Environment:** Optimized for **macOS** development workflows.
+* **Logic:** **Rust + WASM** core (wasm-pack, web target) for harmonic calculations.
+* **UI:** Custom CSS, no Tailwind; single-screen Play layout with tabs (Play, Theory, Tools, Setup, Info).
+* **Environment:** macOS-friendly; `./px` script for build and serve.
+
+---
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/makalin/progressor.git
+cd progressor
+
+# Build the WASM core (outputs pkg/)
+./px build
+# Or: wasm-pack build --target web
+
+# Serve and open in browser
+./px serve
+```
+
+Then open **http://127.0.0.1:8080** in your browser.
 
 ---
 
@@ -37,22 +62,4 @@ Unlike standard chord shufflers, **PROGRESSOR** utilizes a weighted **Graph Theo
 * **X (Twitter):** [@makalin](https://x.com/makalin)
 * **CV:** [dv.com.tr/makalin/](https://dv.com.tr/makalin/)
 
----
-
-## Getting Started
-
-```bash
-# Clone the repository
-git clone https://github.com/makalin/progressor.git
-
-# Build the WASM core
-cargo build --release --target wasm32-unknown-unknown
-
-# Run the local environment using the px toolchain
-./px serve
-
-```
-
 **License:** MIT
-
-**Author:** Mehmet T. AKALIN

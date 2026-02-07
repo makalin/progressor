@@ -1,0 +1,24 @@
+[package]
+name = "progressor"
+version = "0.1.0"
+edition = "2021"
+description = "Harmonic engine for professional improvisation — graph-based chord transitions, voice leading, WASM core."
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+
+[dependencies]
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+
+[profile.release]
+lto = true
+opt-level = 3
+strip = true
