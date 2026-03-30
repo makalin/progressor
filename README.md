@@ -6,6 +6,8 @@
 
 Unlike standard chord shufflers, **PROGRESSOR** uses a weighted **graph** (Circle of Fifths, modal interchange) to suggest smooth chord transitions and voice-leading in real time.
 
+**Try it live:** [makalin.github.io/progressor](https://makalin.github.io/progressor/)
+
 ![PROGRESSOR screenshot](screenshot.png)
 
 ---
@@ -48,7 +50,7 @@ cd progressor
 ./px serve
 ```
 
-Then open **http://127.0.0.1:8080** in your browser.
+Then open **http://127.0.0.1:8080** in your browser. A hosted build is also available at [https://makalin.github.io/progressor/](https://makalin.github.io/progressor/).
 
 ---
 
